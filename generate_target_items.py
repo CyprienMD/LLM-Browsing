@@ -5,6 +5,9 @@ import time
 import datetime
 import operator
 
+print("generating target items...")
+
+
 dataset = "amazon" # "imdb" or "amazon"
 
 def compare_values(val1, val2, attrib):

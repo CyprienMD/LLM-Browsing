@@ -6,6 +6,9 @@ from numpy import exp
 import sys
 import configuration
 
+import datetime # my addition
+
+
 
 # ***** PART 1: INTERNAL HELPER FUNCTIONS FOR QUALITY FUNCTIONS *****
 
@@ -269,7 +272,7 @@ class ColorPrint:
     @staticmethod
     def print_episode(name, episode_number, R, targets_found, perc, end='\n'):
         sys.stderr.write(name+' \x1b[1;33m'+'episode\x1b[0m: ' + str(episode_number)
-                         + '\t\x1b[1;33m R\x1b[0m: ' + str(R) + '\t\x1b[1;33m targets found\x1b[0m: ' + str(targets_found) + ' (' + str(perc) + '%)' + end)
+                         + '\t\x1b[1;33m R\x1b[0m: ' + str(R) + '\t\x1b[1;33m targets found\x1b[0m: ' + str(targets_found) + ' (' + str(perc) + '%)' + datetime.datetime.now().strftime("%A, %Y-%m-%d %H:%M:%S %p") + end)
 
     @staticmethod
     def print_info(message, end='\n'):

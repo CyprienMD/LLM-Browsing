@@ -128,12 +128,13 @@ def explore_execution(db_interface: DBInterface, session_name: str, input_elemen
         try:
             # Given the current state, pick the best action recommended by the learned policy
             policy = np.load('model/policy.npy')
-            recommended_exploration_action = np.argmax(policy[state])
+            recommended_exploration_action = np.argmax(tuple(policy[state])) # WARNING: "tuple" is my personal addition
             recommended_quality_function, recommended_relevance_function = env.demystify_action(
                 recommended_exploration_action)
             recommendations = [recommended_quality_function,
                                recommended_relevance_function]
         except IndexError:
+            print("(index error)")
             recommendations = ["none", "sim"]
     else:
         previous_output_elements_makers = ["sim", "diverse_numerical"]

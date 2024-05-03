@@ -5,7 +5,7 @@ from intex_env.envs.intex_env import intex_env       # INTEX environment
 from data.db_interface import DBInterface
 import intex_experiments
 import pfrl             # A library for Deep Reinforcement Learning
-import gym              # The environment enabler
+import gymnasium as gym              # The environment enabler
 import configuration
 from rl.deep_q import q_function
 import torch

@@ -1,6 +1,7 @@
 # This library contains all configurable parameters for learning policies and environment initialization.
 # All such parameters are organized in the "learning_configurations" and "environment_configurations" dictionaries.
 
+print("script configuration.py called")
 
 # ***** PARAMETERS FOR LEARNING POLICIES *****
 
@@ -32,7 +33,7 @@ learning_configurations["epsilon_decay_value"] = learning_configurations["epsilo
     (end_epsilon_decaying-start_epsilon_decaying)
 
 # "imdb" or "laptops" or "headphones"
-learning_configurations["dataset"] = "imdb"
+learning_configurations["dataset"] = "amazon"
 learning_configurations["target_variant"] = "T1"
 # T1. Best items — 50 Highest rated items with their 20 reviews
 # T2. Positive reviews — 1050 Reviews with most positive sentiments

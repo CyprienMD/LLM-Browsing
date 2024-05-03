@@ -16,7 +16,7 @@ from pfrl.q_functions import DiscreteActionValueHead
 import torch
 import torch.nn
 from torch import nn
-import gym  # the environment enabler
+import gymnasium as gym  # the environment enabler
 from intex_env.envs.intex_env import intex_env  # intext environment
 from rl.deep_q import q_function
 from data.db_interface import DBInterface
@@ -29,6 +29,9 @@ from pfrl.experiments import train_agent_with_evaluation, EvaluationHook
 import math
 import utilities
 from utilities import ColorPrint as uc
+import warnings
+
+warnings.simplefilter(action='ignore', category=UserWarning)
 
 # set parameters based on input arguments from the command line (if any)
 args = [arg[2:] for arg in sys.argv[1:] if arg.startswith("--")]
