@@ -17,7 +17,7 @@ import torch
 import torch.nn
 from torch import nn
 import gymnasium as gym  # the environment enabler
-from intex_env.envs.intex_env import intex_env  # intext environment
+from intex_env.envs.intex_env  import intex_env  # intext environment
 from rl.deep_q import q_function
 from data.db_interface import DBInterface
 import numpy
@@ -62,7 +62,7 @@ operator_variant = configuration.exploration_configurations["operator_variant"]
 reward_variant = configuration.environment_configurations["reward_variant"]
 
 # Define an instance of the INTEX environment
-env: intex_env = gym.make('intex-env-v1')
+env: intex_env = gym.make('intex-env-v1', disable_env_checker=True)
 with DBInterface(dataset) as db_interface:
 
     target_element_ids = intex_experiments.get_target_ids()
@@ -168,7 +168,7 @@ with DBInterface(dataset) as db_interface:
 
     # WandB init and config
     name = f"{dataset}_{target_variant}_{operator_variant}_{transfer_variant}_{reward_variant}"
-    wandb.init(project='ddqn', entity='intex', name=name)
+    wandb.init(project='llm&databases', entity='cyprienm', name=name)
     config = wandb.config
     config.dataset = db_interface.dataset
     config.algorithm = algorithm
@@ -202,7 +202,7 @@ with DBInterface(dataset) as db_interface:
 
     uc.print_title("simulating "+str(nb_episodes)+" exploration sessions ...")
 
-    eval_env: intex_env = gym.make('intex-env-v1')
+    eval_env: intex_env = gym.make('intex-env-v1', disable_env_checker=True)
 
     test_target_element_ids = intex_experiments.get_validation_target_ids()
 
