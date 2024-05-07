@@ -1,7 +1,7 @@
 import random
 import pandas as pd
 from data.db_interface import DBInterface
-from data.generate_review_metadata import Sentiment, Topic, Tag, Similarity
+from data.generate_review_metadata import Sentiment, Topic, Tag, LLMSimilarity, GloVESimilarity
 from tqdm import tqdm
 import json
 
@@ -98,5 +98,8 @@ with DBInterface("amazon") as original_interface:
         Topic(element_texts, db_interface).generate_topics()
         Tag(element_texts, db_interface).generate_tags()
 
-        Similarity('data/glove.6B.50d.txt',
-                   db_interface, process_count=PROCESS_COUNT).generate_summary_review_relevance()
+        # GloVESimilarity('data/glove.6B.50d.txt',
+        #            db_interface, process_count=PROCESS_COUNT).generate_summary_review_relevance()
+
+        LLMSimilarity('voyage',
+                    db_interface, process_count=PROCESS_COUNT).generate_summary_review_relevance()

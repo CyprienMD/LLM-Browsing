@@ -2,3 +2,4 @@ key
 wandb/
 *__pycache__/
 model/
+embed_api_test.py

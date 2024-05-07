@@ -204,7 +204,7 @@ class intex_env(gym.Env):
                 picked = utilities.roll_dice(0, len(output_elements))
                 self.input_element = output_elements.iloc[picked]
 
-    # In policy evalaution, only the non-exponent target reward operates.
+    # In policy evaluation, only the non-exponent target reward operates.
     def get_evaluation_reward(self):
         evaluation_reward = 0
         for output_element in self.output_elements.id.tolist():

@@ -25,6 +25,10 @@ nltk.download('wordnet')
 nltk.download('stopwords')
 
 
+import voyageai
+
+
+
 class Topic():
 
     # The class "topic" is instantiated using the number of topics (by default, it is
@@ -268,8 +272,7 @@ def index_thread_function(elements, threadNumber, thread_boundaries, text_vector
                         VALUES ({text_similarity}, {sentiment_similarity}, {tag_similarity}, {topic_similarity}, {attribute_sim}, {summary_similarity}, {element1.id}, {element2.id});""")
 
 class Similarity:
-    def __init__(self, language_model_address, db_interface: DBInterface, process_count=4):
-        self.language_model = self.load_language_model(language_model_address)
+    def __init__(self, db_interface: DBInterface, process_count=4):
         self.db_interface = db_interface
         self.elements = pd.read_sql(f"""select e.*  
                 from elements as e;""", db_interface.conn)
@@ -303,21 +306,6 @@ class Similarity:
 
         return language_model
 
-    # This function returns numerical embeddings for the textual content of reviews and their summaries.
-    def vectorize(self, texts):
-        vectors = []
-        count_failure = 0
-        print("Vectorizing texts")
-        for text in tqdm(texts):
-            # try:
-            embeddings = [self.language_model.get(
-                word, " ") for word in self.preprocess(text)]
-            embeddings = [e for e in embeddings if type(e) == np.ndarray]
-            vectors.append(np.mean(embeddings, axis=0))
-            # except:
-            #     count_failure += 1
-            #     vectors[text] = self.vectorize("fail")
-        return vectors
 
     # This function cleans the input text by removing unnecessary content.
     def preprocess(self, text):
@@ -407,5 +395,45 @@ class Similarity:
             iterations_counter = 0
         boundaries.append(number_of_elements)
         return boundaries
+    
+class GloVESimilarity(Similarity):
 
+    def __init__(self, language_model_address, db_interface: DBInterface, process_count=4):
+
+        self.language_model = self.load_language_model(language_model_address)
+        super.__init__(self, db_interface, process_count=process_count)
+    
+    # This function returns numerical embeddings for the textual content of reviews and their summaries.
+    def vectorize(self, texts):
+        vectors = []
+        count_failure = 0
+        print("Vectorizing texts")
+        for text in tqdm(texts):
+            # try:
+            embeddings = [self.language_model.get(
+                word, " ") for word in self.preprocess(text)]
+            embeddings = [e for e in embeddings if type(e) == np.ndarray]
+            vectors.append(np.mean(embeddings, axis=0))
+            # except:
+            #     count_failure += 1
+            #     vectors[text] = self.vectorize("fail")
+        return vectors
+
+
+
+class LLMSimilarity(Similarity):
+    
+    def __init__(self, language_model_name, db_interface: DBInterface, process_count=4):
+
+        self.language_model_name = language_model_name
+        if self.language_model_name == "voyage":
+            self.language_model_client = voyageai.Client()
+        else:
+            raise Exception("language model not recognized")
+        super.__init__(self, db_interface, process_count=process_count)
+    
+    # This function returns numerical embeddings for the textual content of reviews and their summaries.
+    def vectorize(self, texts):
+        return [np.zeros(5) for i in range(len(texts))] # ! TODO: remove
+        #return self.language_model_client.embed(texts, model="voyage-large-2-instruct")
     
