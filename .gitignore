@@ -3,3 +3,8 @@ wandb/
 *__pycache__/
 model/
 embed_api_test.py
+*.backup
+model5.gensim*
+*.gensim
+corpus.pkl
+amazon_schema_dump.skl
