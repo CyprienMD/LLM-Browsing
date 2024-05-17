@@ -63,3 +63,193 @@ amazon_T1_ALL__SCL [1;33mepisode[0m: 36.0	[1;33m R[0m: 58.3	[1;33m targets 
 amazon_T1_ALL__SCL [1;33mepisode[0m: 37.0	[1;33m R[0m: 58.32	[1;33m targets found[0m: 106 (41.57%)Tuesday, 2024-05-07 15:11:47 PM
 amazon_T1_ALL__SCL [1;33mepisode[0m: 38.0	[1;33m R[0m: 62.61	[1;33m targets found[0m: 125 (49.02%)Tuesday, 2024-05-07 15:55:11 PM
 amazon_T1_ALL__SCL [1;33mepisode[0m: 39.0	[1;33m R[0m: 54.41	[1;33m targets found[0m: 104 (40.78%)Tuesday, 2024-05-07 16:38:32 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 40.0	[1;33m R[0m: 58.21	[1;33m targets found[0m: 106 (41.57%)Tuesday, 2024-05-07 17:23:21 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 41.0	[1;33m R[0m: 60.85	[1;33m targets found[0m: 115 (45.1%)Tuesday, 2024-05-07 17:58:45 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 42.0	[1;33m R[0m: 47.17	[1;33m targets found[0m: 120 (47.06%)Tuesday, 2024-05-07 18:43:50 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 43.0	[1;33m R[0m: 56.32	[1;33m targets found[0m: 103 (40.39%)Tuesday, 2024-05-07 19:26:46 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 44.0	[1;33m R[0m: 55.05	[1;33m targets found[0m: 114 (44.71%)Tuesday, 2024-05-07 20:12:26 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 45.0	[1;33m R[0m: 64.77	[1;33m targets found[0m: 124 (48.63%)Tuesday, 2024-05-07 20:44:22 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 46.0	[1;33m R[0m: 58.33	[1;33m targets found[0m: 107 (41.96%)Tuesday, 2024-05-07 21:24:05 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 47.0	[1;33m R[0m: 62.71	[1;33m targets found[0m: 106 (41.57%)Tuesday, 2024-05-07 22:03:35 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 48.0	[1;33m R[0m: 61.05	[1;33m targets found[0m: 105 (41.18%)Tuesday, 2024-05-07 22:40:46 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 49.0	[1;33m R[0m: 64.7	[1;33m targets found[0m: 143 (56.08%)Tuesday, 2024-05-07 23:17:53 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 50.0	[1;33m R[0m: 58.82	[1;33m targets found[0m: 124 (48.63%)Tuesday, 2024-05-07 23:59:48 PM
+{'episodes': 20, 'mean': 21.7, 'median': 22.0, 'stdev': 5.202226244093661, 'max': 29.0, 'min': 1.0, 'average_q': 2.3770924, 'average_loss': 0.056671220362186435, 'cumulative_steps': 20000, 'n_updates': 19951, 'rlen': 20000}
+[('average_q', 2.3770924), ('average_loss', 0.056671220362186435), ('cumulative_steps', 20000), ('n_updates', 19951), ('rlen', 20000)]
+[]
+amazon_T1_ALL__SCL [1;33mepisode[0m: 51.0	[1;33m R[0m: 58.28	[1;33m targets found[0m: 114 (44.71%)Thursday, 2024-05-09 04:55:06 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 52.0	[1;33m R[0m: 56.83	[1;33m targets found[0m: 104 (40.78%)Thursday, 2024-05-09 05:32:15 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 53.0	[1;33m R[0m: 55.72	[1;33m targets found[0m: 115 (45.1%)Thursday, 2024-05-09 06:14:48 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 54.0	[1;33m R[0m: 64.29	[1;33m targets found[0m: 134 (52.55%)Thursday, 2024-05-09 06:55:56 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 55.0	[1;33m R[0m: 73.12	[1;33m targets found[0m: 148 (58.04%)Thursday, 2024-05-09 07:38:50 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 56.0	[1;33m R[0m: 58.41	[1;33m targets found[0m: 118 (46.27%)Thursday, 2024-05-09 08:13:23 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 57.0	[1;33m R[0m: 54.09	[1;33m targets found[0m: 124 (48.63%)Thursday, 2024-05-09 08:53:21 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 58.0	[1;33m R[0m: 70.98	[1;33m targets found[0m: 147 (57.65%)Thursday, 2024-05-09 09:28:24 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 59.0	[1;33m R[0m: 65.43	[1;33m targets found[0m: 105 (41.18%)Thursday, 2024-05-09 10:13:23 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 60.0	[1;33m R[0m: 63.33	[1;33m targets found[0m: 113 (44.31%)Thursday, 2024-05-09 10:50:50 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 61.0	[1;33m R[0m: 56.32	[1;33m targets found[0m: 113 (44.31%)Thursday, 2024-05-09 11:18:28 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 62.0	[1;33m R[0m: 62.24	[1;33m targets found[0m: 106 (41.57%)Thursday, 2024-05-09 12:00:15 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 63.0	[1;33m R[0m: 56.33	[1;33m targets found[0m: 109 (42.75%)Thursday, 2024-05-09 12:29:33 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 64.0	[1;33m R[0m: 62.83	[1;33m targets found[0m: 121 (47.45%)Thursday, 2024-05-09 13:13:09 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 65.0	[1;33m R[0m: 71.58	[1;33m targets found[0m: 148 (58.04%)Thursday, 2024-05-09 13:53:49 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 66.0	[1;33m R[0m: 65.51	[1;33m targets found[0m: 145 (56.86%)Thursday, 2024-05-09 14:24:35 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 67.0	[1;33m R[0m: 62.85	[1;33m targets found[0m: 115 (45.1%)Thursday, 2024-05-09 15:04:13 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 68.0	[1;33m R[0m: 54.85	[1;33m targets found[0m: 104 (40.78%)Thursday, 2024-05-09 15:43:05 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 69.0	[1;33m R[0m: 70.21	[1;33m targets found[0m: 142 (55.69%)Thursday, 2024-05-09 16:18:35 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 70.0	[1;33m R[0m: 64.35	[1;33m targets found[0m: 132 (51.76%)Thursday, 2024-05-09 16:46:05 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 71.0	[1;33m R[0m: 52.13	[1;33m targets found[0m: 105 (41.18%)Thursday, 2024-05-09 17:28:34 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 72.0	[1;33m R[0m: 69.05	[1;33m targets found[0m: 160 (62.75%)Thursday, 2024-05-09 18:01:20 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 73.0	[1;33m R[0m: 66.59	[1;33m targets found[0m: 145 (56.86%)Thursday, 2024-05-09 18:36:22 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 74.0	[1;33m R[0m: 66.64	[1;33m targets found[0m: 155 (60.78%)Thursday, 2024-05-09 19:12:42 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 75.0	[1;33m R[0m: 78.68	[1;33m targets found[0m: 147 (57.65%)Thursday, 2024-05-09 19:51:23 PM
+{'episodes': 20, 'mean': 10.9, 'median': 4.5, 'stdev': 11.960021123023065, 'max': 38.0, 'min': 3.0, 'average_q': 2.8195982, 'average_loss': 0.06168862735852599, 'cumulative_steps': 30000, 'n_updates': 29951, 'rlen': 30000}
+[('average_q', 2.8195982), ('average_loss', 0.06168862735852599), ('cumulative_steps', 30000), ('n_updates', 29951), ('rlen', 30000)]
+[]
+amazon_T1_ALL__SCL [1;33mepisode[0m: 76.0	[1;33m R[0m: 71.63	[1;33m targets found[0m: 174 (68.24%)Saturday, 2024-05-11 22:16:14 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 77.0	[1;33m R[0m: 64.5	[1;33m targets found[0m: 144 (56.47%)Saturday, 2024-05-11 22:55:19 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 78.0	[1;33m R[0m: 59.38	[1;33m targets found[0m: 138 (54.12%)Saturday, 2024-05-11 23:30:26 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 79.0	[1;33m R[0m: 72.27	[1;33m targets found[0m: 141 (55.29%)Sunday, 2024-05-12 00:00:34 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 80.0	[1;33m R[0m: 62.57	[1;33m targets found[0m: 142 (55.69%)Sunday, 2024-05-12 00:35:00 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 81.0	[1;33m R[0m: 68.97	[1;33m targets found[0m: 150 (58.82%)Sunday, 2024-05-12 01:14:32 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 82.0	[1;33m R[0m: 64.99	[1;33m targets found[0m: 152 (59.61%)Sunday, 2024-05-12 01:48:32 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 83.0	[1;33m R[0m: 63.12	[1;33m targets found[0m: 138 (54.12%)Sunday, 2024-05-12 02:28:10 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 84.0	[1;33m R[0m: 75.66	[1;33m targets found[0m: 161 (63.14%)Sunday, 2024-05-12 03:00:30 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 85.0	[1;33m R[0m: 61.02	[1;33m targets found[0m: 135 (52.94%)Sunday, 2024-05-12 03:33:59 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 86.0	[1;33m R[0m: 71.69	[1;33m targets found[0m: 150 (58.82%)Sunday, 2024-05-12 04:11:07 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 87.0	[1;33m R[0m: 67.76	[1;33m targets found[0m: 156 (61.18%)Sunday, 2024-05-12 04:43:04 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 88.0	[1;33m R[0m: 57.6	[1;33m targets found[0m: 137 (53.73%)Sunday, 2024-05-12 05:17:57 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 89.0	[1;33m R[0m: 79.04	[1;33m targets found[0m: 152 (59.61%)Sunday, 2024-05-12 05:52:36 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 90.0	[1;33m R[0m: 67.46	[1;33m targets found[0m: 150 (58.82%)Sunday, 2024-05-12 06:23:56 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 91.0	[1;33m R[0m: 66.59	[1;33m targets found[0m: 149 (58.43%)Sunday, 2024-05-12 07:00:07 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 92.0	[1;33m R[0m: 66.95	[1;33m targets found[0m: 145 (56.86%)Sunday, 2024-05-12 07:27:39 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 93.0	[1;33m R[0m: 73.66	[1;33m targets found[0m: 151 (59.22%)Sunday, 2024-05-12 08:14:36 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 94.0	[1;33m R[0m: 62.46	[1;33m targets found[0m: 158 (61.96%)Sunday, 2024-05-12 08:49:59 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 95.0	[1;33m R[0m: 75.72	[1;33m targets found[0m: 148 (58.04%)Sunday, 2024-05-12 09:20:42 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 96.0	[1;33m R[0m: 61.77	[1;33m targets found[0m: 129 (50.59%)Sunday, 2024-05-12 09:53:29 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 97.0	[1;33m R[0m: 73.9	[1;33m targets found[0m: 144 (56.47%)Sunday, 2024-05-12 10:29:35 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 98.0	[1;33m R[0m: 68.96	[1;33m targets found[0m: 152 (59.61%)Sunday, 2024-05-12 11:03:44 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 99.0	[1;33m R[0m: 75.54	[1;33m targets found[0m: 169 (66.27%)Sunday, 2024-05-12 11:44:33 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 100.0	[1;33m R[0m: 59.91	[1;33m targets found[0m: 143 (56.08%)Sunday, 2024-05-12 12:16:32 PM
+{'episodes': 20, 'mean': 44.05, 'median': 46.0, 'stdev': 5.452908446537113, 'max': 51.0, 'min': 36.0, 'average_q': 2.7243512, 'average_loss': 0.05073204342275858, 'cumulative_steps': 40000, 'n_updates': 39951, 'rlen': 40000}
+[('average_q', 2.7243512), ('average_loss', 0.05073204342275858), ('cumulative_steps', 40000), ('n_updates', 39951), ('rlen', 40000)]
+[]
+amazon_T1_ALL__SCL [1;33mepisode[0m: 101.0	[1;33m R[0m: 73.06	[1;33m targets found[0m: 152 (59.61%)Sunday, 2024-05-12 21:31:38 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 102.0	[1;33m R[0m: 66.3	[1;33m targets found[0m: 147 (57.65%)Sunday, 2024-05-12 22:00:09 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 103.0	[1;33m R[0m: 70.02	[1;33m targets found[0m: 150 (58.82%)Sunday, 2024-05-12 22:28:21 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 104.0	[1;33m R[0m: 63.43	[1;33m targets found[0m: 147 (57.65%)Sunday, 2024-05-12 23:02:18 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 105.0	[1;33m R[0m: 71.32	[1;33m targets found[0m: 150 (58.82%)Sunday, 2024-05-12 23:33:48 PM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 106.0	[1;33m R[0m: 68.34	[1;33m targets found[0m: 148 (58.04%)Monday, 2024-05-13 00:10:16 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 107.0	[1;33m R[0m: 69.87	[1;33m targets found[0m: 149 (58.43%)Monday, 2024-05-13 00:41:55 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 108.0	[1;33m R[0m: 68.12	[1;33m targets found[0m: 157 (61.57%)Monday, 2024-05-13 01:20:12 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 109.0	[1;33m R[0m: 68.08	[1;33m targets found[0m: 136 (53.33%)Monday, 2024-05-13 01:53:27 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 110.0	[1;33m R[0m: 66.37	[1;33m targets found[0m: 152 (59.61%)Monday, 2024-05-13 02:27:38 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 111.0	[1;33m R[0m: 86.36	[1;33m targets found[0m: 187 (73.33%)Monday, 2024-05-13 03:02:49 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 112.0	[1;33m R[0m: 75.95	[1;33m targets found[0m: 149 (58.43%)Monday, 2024-05-13 03:42:40 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 113.0	[1;33m R[0m: 66.07	[1;33m targets found[0m: 152 (59.61%)Monday, 2024-05-13 04:26:47 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 114.0	[1;33m R[0m: 71.27	[1;33m targets found[0m: 165 (64.71%)Monday, 2024-05-13 05:06:01 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 115.0	[1;33m R[0m: 64.94	[1;33m targets found[0m: 143 (56.08%)Monday, 2024-05-13 05:43:02 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 116.0	[1;33m R[0m: 71.55	[1;33m targets found[0m: 176 (69.02%)Monday, 2024-05-13 06:11:57 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 117.0	[1;33m R[0m: 58.5	[1;33m targets found[0m: 147 (57.65%)Monday, 2024-05-13 06:46:11 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 118.0	[1;33m R[0m: 69.95	[1;33m targets found[0m: 151 (59.22%)Monday, 2024-05-13 07:18:22 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 119.0	[1;33m R[0m: 54.67	[1;33m targets found[0m: 129 (50.59%)Monday, 2024-05-13 07:45:51 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 120.0	[1;33m R[0m: 61.63	[1;33m targets found[0m: 121 (47.45%)Monday, 2024-05-13 08:20:28 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 121.0	[1;33m R[0m: 66.99	[1;33m targets found[0m: 148 (58.04%)Monday, 2024-05-13 08:53:48 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 122.0	[1;33m R[0m: 69.49	[1;33m targets found[0m: 158 (61.96%)Monday, 2024-05-13 09:24:18 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 123.0	[1;33m R[0m: 56.2	[1;33m targets found[0m: 146 (57.25%)Monday, 2024-05-13 09:59:11 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 124.0	[1;33m R[0m: 68.77	[1;33m targets found[0m: 148 (58.04%)Monday, 2024-05-13 10:31:01 AM
+amazon_T1_ALL__SCL [1;33mepisode[0m: 125.0	[1;33m R[0m: 80.02	[1;33m targets found[0m: 148 (58.04%)Monday, 2024-05-13 11:06:25 AM
+{'episodes': 20, 'mean': 66.6, 'median': 73.0, 'stdev': 26.89433514995109, 'max': 105.0, 'min': 1.0, 'average_q': 2.887918, 'average_loss': 0.05768712552264333, 'cumulative_steps': 50000, 'n_updates': 49951, 'rlen': 50000}
+[('average_q', 2.887918), ('average_loss', 0.05768712552264333), ('cumulative_steps', 50000), ('n_updates', 49951), ('rlen', 50000)]
+[]
+Traceback (most recent call last):
+  File "/home/slide/micheldc/LLM-Browsing/train_deep_agent.py", line 253, in <module>
+    train_agent_with_evaluation(agent, env, steps=episode_length * nb_episodes,
+  File "/home/slide/micheldc/.conda/envs/GUIDES/lib/python3.12/site-packages/pfrl/experiments/train_agent.py", line 208, in train_agent_with_evaluation
+    eval_stats_history = train_agent(
+                         ^^^^^^^^^^^^
+  File "/home/slide/micheldc/.conda/envs/GUIDES/lib/python3.12/site-packages/pfrl/experiments/train_agent.py", line 57, in train_agent
+    obs, r, done, info = env.step(action)
+                         ^^^^^^^^^^^^^^^^
+  File "/home/slide/micheldc/.conda/envs/GUIDES/lib/python3.12/site-packages/gymnasium/wrappers/order_enforcing.py", line 56, in step
+    return self.env.step(action)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slide/micheldc/LLM-Browsing/intex_env/intex_env/envs/intex_env.py", line 107, in step
+    self.output_elements = self.exploration.explore_by_functions(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slide/micheldc/LLM-Browsing/exploration_actions.py", line 79, in explore_by_functions
+    output_elements = self.parametrized_explore(input_element, relevance_function,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slide/micheldc/LLM-Browsing/exploration_actions.py", line 52, in parametrized_explore
+    output_elements = self.compute_quality(
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slide/micheldc/LLM-Browsing/exploration_actions.py", line 123, in compute_quality
+    if not candidate_ids[cursor] in output_element_ids:
+           ~~~~~~~~~~~~~^^^^^^^^
+IndexError: list index out of range
+wandb: - 0.007 MB of 0.007 MB uploadedwandb: \ 0.007 MB of 0.007 MB uploadedwandb: | 0.007 MB of 0.007 MB uploadedwandb: / 0.007 MB of 0.007 MB uploadedwandb: - 0.014 MB of 0.036 MB uploaded (0.002 MB deduped)wandb: \ 0.036 MB of 0.036 MB uploaded (0.002 MB deduped)wandb: 
+wandb: Run history:
+wandb:        attribute_sim █▁▅▅▅▄▆▅▄▂▃▄█▅▃▄▅▆▆▄▁▃▂▂▄▂▅▂▅▃▁▅▃▄▃▂▄▄▄▃
+wandb:         average_loss ▁▅█▂▆
+wandb:            average_q ▁▄▇▇█
+wandb:      coverage_review █▂▁▃▃▆▆█▄▆▂▇▄▅▄▆▃▃▅▇▄▃▃▄▄▄▅▄▃▅▆▅▄▄▅▆▅▅▅▅
+wandb:     cumulative_steps ▁▃▅▆█
+wandb:      discarded_steps ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:   distinct_item_seen █▁▅▁▅▁▄█▇█████▅▅▄█▇█████▄██▄█▅▇▅▇▇█▄▇█▅▇
+wandb: distinct_review_seen █▆▄▃▃▃▃▂▃▄▂▂▂▃▄▄▃▂▅▄▄▁▅▂▅▃▅▁▃▁▃▂▃▄▃▂▃▃▁▂
+wandb:    diverse_numerical ▃█▆▅▅▄▂▁▃▅▇▅▄▄▇▆▆▃▄▃▁▄▄▃▃▂▄▁▃▂▁▁▃▃▂▃▂▃▂▂
+wandb:       diverse_review ▁▄█▇▆▅▇▄▆▅▇▅▆▆▃▅▆▆▃▂▅▆▂▄▄▃▄▄▂▆▂▄▂▃▃▄▄▂▃▂
+wandb:             episodes ▁▁▁▁▁
+wandb:              epsilon ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                  max ▂▁▂▃█
+wandb:                 mean ▂▂▁▅█
+wandb:               median ▂▃▁▅█
+wandb:                  min ▁▁▂█▁
+wandb:            n_updates ▁▃▅▆█
+wandb:                 none ▅▂▂▂▃▂▃▄▄▂▁▁▃▂▃▁▂▅▅▅▆▄▇▆▅▇▄▇█▄▇▆▇▇▇▄▆▆▇▇
+wandb:               reward ▁▅▂█▄▄█▄▇▄▄▄▄▂▆▅▄▇▇▄▅▅▆▆▆▅▅▇▆▇▅█▆▇▆█▆▇▆▆
+wandb:                 rlen ▁▃▅▆█
+wandb:        sentiment_sim ▅▂▆▅▃▃▃▂▄▃▄▁▁▂▆▃▂▄▂▃▅▄▇▅▆▇▃▆▅▃▇▃▅▄▆▃█▅▄▆
+wandb:                  sim ▆█▆▆▂▂▃▅▄▂▂▄▅▆▅▃▂▄▃▅▆▃▃▃▁▅▃▂▁▄▂▆▅▃▃▄▂▂▄▃
+wandb:                stdev ▁▁▃▁█
+wandb:          step_reward █▄▂▂▂▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+wandb:                steps ▁▁▁▂▂▂▂▂▂▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▇▇▇▇▇▇███
+wandb:          summary_sim ▁▅▃▄▆█▆▆▅▇▇█▅▆▅█▅▅▅▅▄▄▄▆▆▆██▇▇▆▅▅▅▆▇▆▇▆▆
+wandb:              tag_sim █▅▄▁▅▁▂▃▃▂▃▂▃▁▅▃▄▅▅▄▇▆▄▄▆▂▁▄▄▆▆▄▃▇▃▅▅▄▃▃
+wandb:        targets_found ▁▅▃▅▆▅▅▅▅▅▅▆▅▅▆▅▅▇▇▅▅▅▆▇▇▇▆▇▇▇▆█▇▇▆▇▇▇▇▇
+wandb:            topic_sim ▂▃▄▅▆▆▆▅▅▆▅▄▅▅▂▃█▃▆▅▂▆▄▄▃▃▄▂▃▂▁▂▃▃▄▃▁▃▄▃
+wandb: 
+wandb: Run summary:
+wandb:        attribute_sim 36
+wandb:         average_loss 0.05769
+wandb:            average_q 2.88792
+wandb:      coverage_review 46
+wandb:     cumulative_steps 50000
+wandb:      discarded_steps 0
+wandb:   distinct_item_seen 100
+wandb: distinct_review_seen 559
+wandb:    diverse_numerical 84
+wandb:       diverse_review 85
+wandb:             episodes 20
+wandb:              epsilon 0.5
+wandb:                  max 105.0
+wandb:                 mean 66.6
+wandb:               median 73.0
+wandb:                  min 1.0
+wandb:            n_updates 49951
+wandb:                 none 185
+wandb:               reward 80.0247
+wandb:                 rlen 50000
+wandb:        sentiment_sim 101
+wandb:                  sim 61
+wandb:                stdev 26.89434
+wandb:          step_reward 0.0016
+wandb:                steps 50000
+wandb:          summary_sim 106
+wandb:              tag_sim 52
+wandb:        targets_found 148
+wandb:            topic_sim 44
+wandb: 
+wandb: 🚀 View run amazon_T1_ALL__SCL at: https://wandb.ai/cyprienm/llm%26databases/runs/8j0vaxl9
+wandb: ⭐️ View project at: https://wandb.ai/cyprienm/llm%26databases
+wandb: Synced 5 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./wandb/run-20240506_115443-8j0vaxl9/logs

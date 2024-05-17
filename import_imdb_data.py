@@ -4,7 +4,7 @@ from tqdm import tqdm
 import requests
 import json
 from data.db_interface import DBInterface
-from data.generate_review_metadata import Sentiment, Topic, Tag, Similarity
+from data.generate_review_metadata import Sentiment, Topic, Tag, GloVESimilarity
 
 MIN_REVIEW_PER_ITEM = 400
 REVIEW_SAMPLE_PER_ITEM = 20
@@ -139,5 +139,5 @@ with DBInterface("imdb") as db_interface:
     Topic(element_texts, db_interface).generate_topics()
     Tag(element_texts, db_interface).generate_tags()
 
-    Similarity('data/glove.6B.50d.txt',
+    GloVESimilarity('data/glove.6B.50d.txt',
                db_interface, process_count=PROCESS_COUNT).generate_summary_review_relevance()

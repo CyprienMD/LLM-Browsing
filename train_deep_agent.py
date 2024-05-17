@@ -110,6 +110,7 @@ with DBInterface(dataset) as db_interface:
     if algorithm == "DQN":
 
         q_function = q_function(observation_size, env.get_action_space_size())
+        print("env.get_action_space_size():", env.get_action_space_size())
         replay_buffer = pfrl.replay_buffers.ReplayBuffer(capacity=10 ** 5)
         # Use Adam optimizer to optimize the Q function. We set eps=1e-2 for stability.
         optimizer = torch.optim.Adam(q_function.parameters(
