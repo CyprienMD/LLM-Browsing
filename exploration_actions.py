@@ -49,6 +49,7 @@ class exploration():
         # print(nb_items_received)
 
         # Step 2 of exploration: Obtain a list of k optimized elements with respect to the quality function
+        print("calling compute_quality")
         output_elements = self.compute_quality(
             elements_shortlist, k, timelimit, quality_function, optim_loops, optim_meter, optimization_direction)
 
@@ -84,7 +85,7 @@ class exploration():
         return output_elements
 
     def compute_quality(self, elements_shortlist, k, timelimit, quality_function, optim_loops, optim_meter, optimization_direction):
-
+        print("running compute_quality...")
         # We initialize output elements with top-k most relevant elements.
         output_element_ids = elements_shortlist.iloc[0:k].id.to_list()
 
@@ -128,6 +129,7 @@ class exploration():
                     candidate_output_element_ids[i] = candidate_ids[cursor]
                     # We obtain the score of the list with the replacement, to compare with the current "output_elements".
 
+                    print("calling compute_quality_score...")
                     candidate_quality_score = self.compute_quality_score(
                         quality_function, candidate_output_element_ids, elements_data)
 
@@ -176,5 +178,7 @@ class exploration():
             improved = True
         elif new_quality_score < old_quality_score and optimization_direction == "min":
             improved = True
+
+        print("improvement?", new_quality_score, " vs ", old_quality_score, " : ", improved)
 
         return improved

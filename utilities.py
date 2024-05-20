@@ -25,6 +25,8 @@ def collective_jaccard(text):
     for review in text:
         review_words = review.split(" ")
         words.append(review_words)
+    
+    print("number of words:", len(words))
 
     # Check a pair of reviews at a time, and compute the intersection and the union.
     # The Jaccard diversity score (between each pair of reviews) is obtained by

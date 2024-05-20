@@ -24,4 +24,5 @@ class q_function(torch.nn.Module):
         h = torch.nn.functional.relu(self.l2(h))
         h = torch.nn.functional.relu(self.l21(h))
         h = self.l3(h)
+        print(f"q_function on device { next(self.parameters()).device} called")
         return pfrl.action_value.DiscreteActionValue(h)

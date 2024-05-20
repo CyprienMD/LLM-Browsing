@@ -115,7 +115,8 @@ with DBInterface(dataset) as db_interface:
         optimizer = torch.optim.Adam(q_function.parameters(
         ), lr=configuration.learning_configurations["alpha"], eps=1e-2)
         agent = pfrl.agents.DoubleDQN(q_function, optimizer, replay_buffer, gamma, explorer,
-                                      replay_start_size=50, update_interval=1, target_update_interval=100, phi=phi, gpu=-1, recurrent=False)
+                                      replay_start_size=50, update_interval=1, target_update_interval=100, phi=phi, gpu=0, recurrent=False)
+        print("working on device:", agent.device)
         network_width = q_function.network_width
     elif algorithm == "DQN Recurrent":
         network_width = 1024
