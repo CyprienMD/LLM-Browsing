@@ -11,11 +11,7 @@ class DBInterface:
 
     def __enter__(self):
         self.conn = psycopg2.connect(
-<<<<<<< HEAD
             f"dbname={self.dataset}_reviews host=potato.imag.fr port=5432 user=micheldc password=Vd9h083mxB9vXBm4jyMJDrHDjKB9Q2"
-=======
-            f"dbname={self.dataset}_reviews host=localhost port=5432 user=micheldc password=Vd9h083mxB9vXBm4jyMJDrHDjKB9Q2"
->>>>>>> origin/main
         )
         self.cur = self.conn.cursor()
         return self
