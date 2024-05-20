@@ -26,28 +26,28 @@ with DBInterface("amazon") as original_interface:
 
         # Restricted the items to those with price and at least 10 reviews
 
-        # item_ids = pd.read_sql(f"""select id
-        #     from (
-        #     select i.id, i.asin, count(r.id) as review_count
-        #     from items as i
-        #     inner join reviews as r on r.asin = i.asin and i.price != ''
-        #     group by i.id, i.asin ) as c
-        #     where review_count >= {MIN_REVIEW_PER_ITEM}  """, db_interface.conn).sample(SAMPLE_SIZE)["id"].to_list()
-        item_ids = pd.read_sql(f"""select id from (
-        SELECT i.id as id, count(r.*) as rev_count
-            FROM public.items_complete as i
-            inner join reviews_complete as r on r.asin = i.asin
-            where i.category ? '{CATEGORY.capitalize()}' and i.price != '' and not i.price like '%a-box%' 
-            group by i.id
-            order by rev_count desc
-        ) as t where rev_count>={MIN_REVIEW_PER_ITEM};""", original_interface.conn).iloc[:SAMPLE_SIZE]["id"].to_list()
+        item_ids = pd.read_sql(f"""select id
+            from (
+            select i.id, i.asin, count(r.id) as review_count
+            from items as i
+            inner join reviews as r on r.asin = i.asin and i.price != ''
+            group by i.id, i.asin ) as c
+            where review_count >= {MIN_REVIEW_PER_ITEM}  """, original_interface.conn).sample(SAMPLE_SIZE)["id"].to_list()
+        # item_ids = pd.read_sql(f"""select id from (
+        # SELECT i.id as id, count(r.*) as rev_count
+        #     FROM public.items_complete as i
+        #     inner join reviews_complete as r on r.asin = i.asin
+        #     where i.category ? '{CATEGORY.capitalize()}' and i.price != '' and not i.price like '%a-box%' 
+        #     group by i.id
+        #     order by rev_count desc
+        # ) as t where rev_count>={MIN_REVIEW_PER_ITEM};""", original_interface.conn).iloc[:SAMPLE_SIZE]["id"].to_list()
         items = pd.read_sql(
-            f""" select * from items_complete where id in ({','.join(map(str,item_ids))}) """, original_interface.conn)
+            f""" select * from items where id in ({','.join(map(str,item_ids))}) """, original_interface.conn)
         element_texts = []
         print("Selecting items and reviews")
         for index, item in tqdm(items.iterrows()):
             reviews = pd.read_sql(
-                f"select * from reviews_complete where asin = '{item.asin}' order by vote desc", original_interface.conn).iloc[:REVIEW_SAMPLE_PER_ITEM]
+                f"select * from reviews where asin = '{item.asin}'", original_interface.conn).iloc[:REVIEW_SAMPLE_PER_ITEM]
             item_rating = reviews.overall.sum()/len(reviews)
             item_text = item.description.replace("'", "''")
             item_summary = ""

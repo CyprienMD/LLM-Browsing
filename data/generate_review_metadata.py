@@ -237,12 +237,22 @@ def index_thread_function(elements, threadNumber, thread_boundaries, text_vector
         for index1, element1 in tqdm(elements.iloc[start_index:end_index].iterrows(), total=(end_index-start_index)):
             for index2, element2 in elements.loc[index1+1:(len(elements)-1)].iterrows():
                 if element1.type == 'item' or element2.type == 'item' or element1.item_id == element2.item_id:
-                    text_similarity = Similarity.cosine_word_embedding(
+
+                    SIMILARITY = LLMSimilarity
+
+                    text_similarity = SIMILARITY.cosine_word_embedding(
                         text_vectors[index1], text_vectors[index2])
                     if math.isnan(text_similarity) == True:
                         text_similarity = 0
 
-                    summary_similarity = Similarity.cosine_word_embedding(
+                    try:
+                        assert text_similarity == 100.
+                    except:
+                        print(text_vectors[index1], text_vectors[index2])
+                        print("text_similarity:", text_similarity)
+                        raise(Exception("unexpected embeddings"))
+
+                    summary_similarity = SIMILARITY.cosine_word_embedding(
                         summary_vectors[index1], summary_vectors[index2])
                     if math.isnan(summary_similarity) == True:
                         summary_similarity = 0
@@ -259,7 +269,7 @@ def index_thread_function(elements, threadNumber, thread_boundaries, text_vector
                     if math.isnan(sentiment_similarity) == True:
                         sentiment_similarity = 0
 
-                    tag_similarity = Similarity.cosine_word_embedding(
+                    tag_similarity = SIMILARITY.cosine_word_embedding(
                         tag_vectors[index1], tag_vectors[index2])
                     if math.isnan(tag_similarity) == True:
                         tag_similarity = 0
@@ -290,30 +300,6 @@ class Similarity:
                 attributes_keyvalues.append(f"{key}:{value}")
         return set(attributes_keyvalues)
 
-    def load_language_model(self, language_model_address):
-        # The variable "language_model_content" will contain the whole content of
-        # ... the language model file.
-        with open(language_model_address, encoding="utf8") as language_model_file:
-            language_model_content = language_model_file.readlines()
-
-        # Build language model
-        language_model = {}
-        for line in language_model_content:
-            split_line = line.split()
-            word = split_line[0]
-            embedding = np.array([float(val) for val in split_line[1:]])
-            language_model[word] = embedding
-
-        return language_model
-
-
-    # This function cleans the input text by removing unnecessary content.
-    def preprocess(self, text):
-        letters_only_text = re.sub("[^a-zA-Z]", " ", text)
-        words = letters_only_text.lower().split()
-        stopword_set = set(stopwords.words("english"))
-        cleaned_words = list(set([w for w in words if w not in stopword_set]))
-        return cleaned_words
 
     # Given two vectors of words, this functions computes their similarity score.
     @staticmethod
@@ -402,6 +388,22 @@ class GloVESimilarity(Similarity):
 
         self.language_model = self.load_language_model(language_model_address)
         super.__init__(self, db_interface, process_count=process_count)
+
+    def load_language_model(self, language_model_address):
+        # The variable "language_model_content" will contain the whole content of
+        # ... the language model file.
+        with open(language_model_address, encoding="utf8") as language_model_file:
+            language_model_content = language_model_file.readlines()
+
+        # Build language model
+        language_model = {}
+        for line in language_model_content:
+            split_line = line.split()
+            word = split_line[0]
+            embedding = np.array([float(val) for val in split_line[1:]])
+            language_model[word] = embedding
+
+        return language_model
     
     # This function returns numerical embeddings for the textual content of reviews and their summaries.
     def vectorize(self, texts):
@@ -418,6 +420,14 @@ class GloVESimilarity(Similarity):
             #     count_failure += 1
             #     vectors[text] = self.vectorize("fail")
         return vectors
+    
+    # This function cleans the input text by removing unnecessary content.
+    def preprocess(self, text):
+        letters_only_text = re.sub("[^a-zA-Z]", " ", text)
+        words = letters_only_text.lower().split()
+        stopword_set = set(stopwords.words("english"))
+        cleaned_words = list(set([w for w in words if w not in stopword_set]))
+        return cleaned_words
 
 
 
@@ -430,10 +440,10 @@ class LLMSimilarity(Similarity):
             self.language_model_client = voyageai.Client()
         else:
             raise Exception("language model not recognized")
-        super.__init__(self, db_interface, process_count=process_count)
+        super().__init__(db_interface, process_count=process_count)
     
     # This function returns numerical embeddings for the textual content of reviews and their summaries.
     def vectorize(self, texts):
-        return [np.zeros(5) for i in range(len(texts))] # ! TODO: remove
-        #return self.language_model_client.embed(texts, model="voyage-large-2-instruct")
+        #return [np.zeros(5) for i in range(len(texts))] # ! TODO: remove
+        return self.language_model_client.embed(texts, model="voyage-large-2-instruct")
     

@@ -97,3 +97,7 @@ uvicorn
 # intex/train_deep_agent.py: 25
 # intex/utilities/save_and_smooth_and_plot.py: 2
 wandb
+
+# ! ADDITIONAL STEPS:
+# python "import nltk; nltk.download("punkt")"
+# python -m spacy download en_core_web_lg
