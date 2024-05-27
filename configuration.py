@@ -70,7 +70,7 @@ exploration_configurations["time_limit"] = 100
 # Number of optimization improvement loops
 exploration_configurations["nb_optimization_loops"] = 150
 # "time_limit", "nb_optimization_loops"
-exploration_configurations["optimization_meter"] = "nb_optimization_loops"
+exploration_configurations["optimization_meter"] = "time_limit"
 
 # Assuming the set {"sim", "summary_sim", "sentiment_sim", "tag_sim", "topic_sim"}, hence 5 relevance functions
 exploration_configurations["nb_relevance_functions"] = 5
@@ -111,4 +111,4 @@ environment_configurations["sim_reward_active"] = True
 # power function which is neutralized if equal to 1
 environment_configurations["reward_power"] = 4
 environment_configurations["neutral_reward"] = 0
-environment_configurations["reward_variant"] = "SCL"  # "SCL"  # "SCL" or "MOO"
+environment_configurations["reward_variant"] = "MOO"  # "SCL"  # "SCL" or "MOO"

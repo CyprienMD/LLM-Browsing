@@ -8,3 +8,5 @@ model5.gensim*
 *.gensim
 corpus.pkl
 amazon_schema_dump.skl
+voyage_API_key.txt
+OAR.*

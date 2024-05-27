@@ -19,9 +19,9 @@ with DBInterface("amazon") as db_interface:
     
     db_interface.cur.execute( "DELETE FROM similarities;")
     
-    Sentiment(element_texts, db_interface).generate_sentiments()
-    Topic(element_texts, db_interface).generate_topics()
-    Tag(element_texts, db_interface).generate_tags()
+    #Sentiment(element_texts, db_interface).generate_sentiments()
+    #Topic(element_texts, db_interface).generate_topics()
+    #Tag(element_texts, db_interface).generate_tags()
 
     LLMSimilarity('voyage',
                 db_interface, process_count=PROCESS_COUNT).generate_summary_review_relevance()

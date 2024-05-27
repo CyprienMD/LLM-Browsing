@@ -21,6 +21,7 @@ from spacy.lang.en import English
 from textblob import TextBlob
 import pandas as pd
 from tqdm import tqdm
+import time
 nltk.download('wordnet')
 nltk.download('stopwords')
 
@@ -235,7 +236,8 @@ def index_thread_function(elements, threadNumber, thread_boundaries, text_vector
         end_index = thread_boundaries[threadNumber]
         print(f"started n{threadNumber} {start_index} {end_index}")
         for index1, element1 in tqdm(elements.iloc[start_index:end_index].iterrows(), total=(end_index-start_index)):
-            for index2, element2 in elements.loc[index1+1:(len(elements)-1)].iterrows():
+            #for index2, element2 in elements.loc[index1+1:(len(elements)-1)].iterrows(): # * previous
+            for index2, element2 in elements.loc[index1+1:end_index].iterrows(): # ! modified
                 if element1.type == 'item' or element2.type == 'item' or element1.item_id == element2.item_id:
 
                     SIMILARITY = LLMSimilarity
@@ -245,12 +247,6 @@ def index_thread_function(elements, threadNumber, thread_boundaries, text_vector
                     if math.isnan(text_similarity) == True:
                         text_similarity = 0
 
-                    try:
-                        assert text_similarity == 100.
-                    except:
-                        print(text_vectors[index1], text_vectors[index2])
-                        print("text_similarity:", text_similarity)
-                        raise(Exception("unexpected embeddings"))
 
                     summary_similarity = SIMILARITY.cosine_word_embedding(
                         summary_vectors[index1], summary_vectors[index2])
@@ -312,11 +308,14 @@ class Similarity:
     # ... reviews or their their summaries.
     def generate_summary_review_relevance(self):
         texts = self.elements["text"].to_list()
+        print("Vectorizing texts:")
         text_vectors = self.vectorize(texts)
         summaries = self.elements["summary"].to_list()
+        print("Vectorizing summaries:")
         summary_vectors = self.vectorize(summaries)
         tags = self.elements["tags"].to_list()
         tags = list(map(";".join, tags))
+        print("Vectorizing tags:")
         tag_vectors = self.vectorize(tags)
         print("Computing similarities")
         thread_boundaries = self.get_thread_boundaries(
@@ -410,6 +409,7 @@ class GloVESimilarity(Similarity):
         vectors = []
         count_failure = 0
         print("Vectorizing texts")
+
         for text in tqdm(texts):
             # try:
             embeddings = [self.language_model.get(
@@ -437,13 +437,40 @@ class LLMSimilarity(Similarity):
 
         self.language_model_name = language_model_name
         if self.language_model_name == "voyage":
-            self.language_model_client = voyageai.Client()
+            with open("voyage_API_key.txt", "r") as f:
+                api_key = f.read()
+            self.language_model_client = voyageai.Client(api_key=api_key)
         else:
             raise Exception("language model not recognized")
         super().__init__(db_interface, process_count=process_count)
     
     # This function returns numerical embeddings for the textual content of reviews and their summaries.
     def vectorize(self, texts):
-        #return [np.zeros(5) for i in range(len(texts))] # ! TODO: remove
-        return self.language_model_client.embed(texts, model="voyage-large-2-instruct")
-    
+        tokenized = self.language_model_client.tokenize(texts)
+
+        # print(f"request API for {len(texts)} texts, totalling {self.language_model_client.count_tokens(texts)} tokens")
+        # return [np.zeros(5) for i in range(len(texts))]
+        #print("len(texts): ", len(texts), len(texts[0]))
+        #raise()
+        def batch_requests(texts, max_tpm, max_batch_size):
+            tokenized = self.language_model_client.tokenize(texts)
+            batch = []
+            current_batch_tokens = 0
+            for i,text in enumerate(texts):
+                nb_tokens = len(tokenized[i])
+
+                if current_batch_tokens + nb_tokens < max_tpm and len(batch) + 1 < max_batch_size:
+                    batch.append(text)
+                    current_batch_tokens += nb_tokens
+                else:
+                    yield batch
+                    batch = [text]
+                    current_batch_tokens = nb_tokens
+            yield batch          
+        batched_requests = batch_requests(texts, 8000, 128) # for a theoretical limit of 10k tpm
+        res = []
+        for batch in batched_requests:
+            res += [np.asarray(l) for l in self.language_model_client.embed(batch, model="voyage-large-2-instruct").embeddings]
+            time.sleep(65)
+            #print("size of embedding: ", [r.shape for r in res])
+        return res

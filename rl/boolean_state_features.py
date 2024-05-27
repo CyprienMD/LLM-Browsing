@@ -40,7 +40,7 @@ class StateEncoder:
         quality_score = 0
 
         if quality_function == "diverse_numerical":
-            quality_score = utilities.collective_jaccard(element_texts)
+            quality_score = utilities.collective_jaccard_diversity(element_texts)
         if quality_function == "diverse_review":
             quality_score = statistics.stdev(element_ratings)
         if quality_function == "coverage_review":

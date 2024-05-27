@@ -49,7 +49,6 @@ class exploration():
         # print(nb_items_received)
 
         # Step 2 of exploration: Obtain a list of k optimized elements with respect to the quality function
-        print("calling compute_quality")
         output_elements = self.compute_quality(
             elements_shortlist, k, timelimit, quality_function, optim_loops, optim_meter, optimization_direction)
 
@@ -85,7 +84,7 @@ class exploration():
         return output_elements
 
     def compute_quality(self, elements_shortlist, k, timelimit, quality_function, optim_loops, optim_meter, optimization_direction):
-        print("running compute_quality...")
+        # - print("running compute_quality...")
         # We initialize output elements with top-k most relevant elements.
         output_element_ids = elements_shortlist.iloc[0:k].id.to_list()
 
@@ -129,7 +128,6 @@ class exploration():
                     candidate_output_element_ids[i] = candidate_ids[cursor]
                     # We obtain the score of the list with the replacement, to compare with the current "output_elements".
 
-                    print("calling compute_quality_score...")
                     candidate_quality_score = self.compute_quality_score(
                         quality_function, candidate_output_element_ids, elements_data)
 
@@ -151,6 +149,8 @@ class exploration():
             time_spent += (end_time - start_time)
             loop_count += 1
 
+        # - print("at the end of compute_quality, get_collective_jaccard_calls returns", utilities.get_collective_jaccard_calls())
+
         return elements_shortlist[elements_shortlist.id.isin(output_element_ids)]
 
     # The function returns a value between 0 and 1, depending on the semantics of the quality function.
@@ -162,7 +162,7 @@ class exploration():
         if quality_function == "diverse_numerical":
             quality = statistics.stdev(data)
         elif quality_function == "diverse_review":
-            quality = utilities.collective_jaccard(data)
+            quality = utilities.collective_jaccard_diversity(data)
         elif quality_function == "coverage_review":
             quality = utilities.unique_word_count(data)
 
@@ -174,11 +174,9 @@ class exploration():
 
         improved = False
 
-        if new_quality_score > old_quality_score and optimization_direction == "max":
+        if new_quality_score >= old_quality_score and optimization_direction == "max": # ! TODO : switch back to <
             improved = True
-        elif new_quality_score < old_quality_score and optimization_direction == "min":
+        elif new_quality_score <= old_quality_score and optimization_direction == "min": # ! TODO : switch back to >
             improved = True
-
-        print("improvement?", new_quality_score, " vs ", old_quality_score, " : ", improved)
 
         return improved

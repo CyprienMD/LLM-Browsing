@@ -101,3 +101,4 @@ wandb
 # ! ADDITIONAL STEPS:
 # python "import nltk; nltk.download("punkt")"
 # python -m spacy download en_core_web_lg
+# python -m textblolb.download_corpora

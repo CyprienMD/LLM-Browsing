@@ -5,28 +5,35 @@ import numpy as np
 from numpy import exp
 import sys
 import configuration
+from scipy.spatial.distance import pdist, squareform
 
 import datetime # my addition
 
-
+# - collective_jaccard_calls = 0
 
 # ***** PART 1: INTERNAL HELPER FUNCTIONS FOR QUALITY FUNCTIONS *****
 
 # In case quality_function is "diverse_review", we compute the diversity of reviews
 # ... using collective Jaccard.
-def collective_jaccard(text):
+def collective_jaccard(text): # deprecated
+
+    raise(Exception("collective_jaccard methpd is deprecated, use collective_jaccard_diversity"))
 
     words = []
     quality_score = 0
+
+    global collective_jaccard_calls
+    collective_jaccard_calls += 1
 
     # Add all words in the reviews to the list "words"
     # Each review has its own set of words.
     # Note that obviously the words could be repetitive.
     for review in text:
         review_words = review.split(" ")
+        # - review_words = list(set(review_words)) # ! was not in original code
         words.append(review_words)
     
-    print("number of words:", len(words))
+    jaccard_distances = []
 
     # Check a pair of reviews at a time, and compute the intersection and the union.
     # The Jaccard diversity score (between each pair of reviews) is obtained by
@@ -37,8 +44,10 @@ def collective_jaccard(text):
             intersected_words = [word for word in words[i] if word in words[j]]
             union_words = words[i] + words[j]
             pairwise_jaccard = 1 - (len(intersected_words) / len(union_words))
+            jaccard_distances.append(pairwise_jaccard)
             quality_score += pairwise_jaccard
             cnt += 1
+    # - print("pairwise jaccard distances:", jaccard_distances)
 
     # The overall Jaccard score is the average of individual score, i.e, the sum
     # ... divided by the count. For any reason, if the count remained zero, the
@@ -49,9 +58,48 @@ def collective_jaccard(text):
     except:
         return 0
 
+# - def get_collective_jaccard_calls():
+# -     return collective_jaccard_calls
+
+def lists_to_binary_matrix(lists):
+    # Get the unique elements in all lists
+    unique_elements = sorted(set().union(*lists))
+    element_index = {element: idx for idx, element in enumerate(unique_elements)}
+    
+    # Create a binary matrix where each row corresponds to a list
+    binary_matrix = np.zeros((len(lists), len(unique_elements)), dtype=int)
+    for i, lst in enumerate(lists):
+        for element in lst:
+            binary_matrix[i, element_index[element]] = 1
+            
+    return binary_matrix
+
+def collective_jaccard_diversity(texts):
+
+    # - global collective_jaccard_calls
+    # - collective_jaccard_calls += 1
+
+    words = []
+    for review in texts:
+        review_words = review.split(" ")
+        words.append(review_words)
+
+    binary_matrix = lists_to_binary_matrix(words)
+    
+    # Compute pairwise Jaccard distances
+    jaccard_distances = pdist(binary_matrix, metric='jaccard')
+
+    # - print("jaccard distances:", jaccard_distances)
+    
+    # Compute the average Jaccard diversity
+    average_jaccard_diversity = np.mean(jaccard_distances)
+    
+    return average_jaccard_diversity
+
+
+
 # In case quality_function is "coverage_review", we compute the coverage of reviews
 # ... using the unique word count.
-
 
 def unique_word_count(reviews):
 

@@ -42,7 +42,7 @@ for arg in args:
 torch.set_num_threads(5)
 
 # Define an instance of the INTEX environment
-env: intex_env = gym.make('intex-env-v1')
+env: intex_env = gym.make('intex-env-v1', disable_env_checker=True)
 with DBInterface(dataset) as db_interface:
 
     target_query = intex_experiments.target_query(test=True)
@@ -92,15 +92,13 @@ with DBInterface(dataset) as db_interface:
     if algorithm == "DQN":
 
         q_function = q_function(observation_size, env.get_action_space_size())
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("working on device:", "cuda" if torch.cuda.is_available() else "cpu")
-        q_function.to(device)
         replay_buffer = pfrl.replay_buffers.ReplayBuffer(capacity=10 ** 5)
         # Use Adam optimizer to optimize the Q function. We set eps=1e-2 for stability.
         optimizer = torch.optim.Adam(q_function.parameters(
         ), lr=configuration.learning_configurations["alpha"], eps=1e-2)
         agent = pfrl.agents.DoubleDQN(q_function, optimizer, replay_buffer, gamma, explorer,
-                                      replay_start_size=50, update_interval=1, target_update_interval=100, phi=phi, gpu=-1, recurrent=False)
+                                      replay_start_size=50, update_interval=1, target_update_interval=100, phi=phi, gpu=0, recurrent=False)
+        print("working on device:", agent.device)
         network_width = q_function.network_width
     elif algorithm == "DQN Recurrent":
         network_width = 1024
@@ -152,7 +150,8 @@ with DBInterface(dataset) as db_interface:
                                 num_processes=1, phi=phi, max_grad_norm=None)
 
     # WandB init and config
-    wandb.init(project='ddqn', entity='intex')
+    name = f"{dataset}_{target_variant}_{operator_variant}_{transfer_variant}_{reward_variant}"
+    wandb.init(project='llm&databases', entity='cyprienm', name=name+"_evaluation")
     config = wandb.config
     config.dataset = db_interface.dataset
     config.algorithm = algorithm
@@ -193,8 +192,7 @@ with DBInterface(dataset) as db_interface:
         observation_size), columns=feature_activation_columns)
 
     # load the trained model based on the testing variant
-    agent_model_address = "model/{}_t{}/170000_finish".format(
-        dataset, target_variant[1])
+    agent_model_address = f"model/{name}/best"
     agent.load(agent_model_address)
     # agent.load("dqn-agent")
 
