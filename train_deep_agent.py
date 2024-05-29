@@ -29,9 +29,9 @@ from pfrl.experiments import train_agent_with_evaluation, EvaluationHook
 import math
 import utilities
 from utilities import ColorPrint as uc
-import warnings
+# - import warnings
 
-warnings.simplefilter(action='ignore', category=UserWarning)
+# - warnings.simplefilter(action='ignore', category=UserWarning)
 
 # set parameters based on input arguments from the command line (if any)
 args = [arg[2:] for arg in sys.argv[1:] if arg.startswith("--")]
@@ -68,7 +68,7 @@ with DBInterface(dataset) as db_interface:
     target_element_ids = intex_experiments.get_target_ids()
 
     # Define the starting point and the target of the environment
-    env.initialize(k=configuration.exploration_configurations["k"], target_element_ids=target_element_ids,
+    env.unwrapped.initialize(k=configuration.exploration_configurations["k"], target_element_ids=target_element_ids,
                    reward_variant=reward_variant, db_interface=db_interface, reward_power=reward_power,
                    input_element_selection_strategy=configuration.learning_configurations["input_element_selection_strategy"])
 
@@ -90,14 +90,14 @@ with DBInterface(dataset) as db_interface:
             configuration.learning_configurations["start_epsilon"],
             configuration.learning_configurations["end_epsilon"],
             nb_episodes * episode_length,
-            random_action_func=env.choose_random_action
+            random_action_func=env.unwrapped.choose_random_action
         )
     else:
         explorer = pfrl.explorers.ExponentialDecayEpsilonGreedy(
             configuration.learning_configurations["start_epsilon"],
             configuration.learning_configurations["end_epsilon"],
             configuration.learning_configurations["epsilon_decay_factor"],
-            random_action_func=env.choose_random_action
+            random_action_func=env.unwrapped.choose_random_action
         )
     # Set the discount factor for future rewards.
     gamma = configuration.learning_configurations["gamma"]
@@ -109,7 +109,7 @@ with DBInterface(dataset) as db_interface:
     def phi(x): return x.astype(numpy.float32, copy=False)
     if algorithm == "DQN":
 
-        q_function = q_function(observation_size, env.get_action_space_size())
+        q_function = q_function(observation_size, env.unwrapped.get_action_space_size())
         replay_buffer = pfrl.replay_buffers.ReplayBuffer(capacity=10 ** 5)
         # Use Adam optimizer to optimize the Q function. We set eps=1e-2 for stability.
         optimizer = torch.optim.Adam(q_function.parameters(
@@ -128,7 +128,7 @@ with DBInterface(dataset) as db_interface:
             torch.nn.Linear(network_width, network_width),
             nn.ReLU(),
             nn.LSTM(input_size=network_width, hidden_size=network_width),
-            nn.Linear(network_width, env.get_action_space_size()),
+            nn.Linear(network_width, env.unwrapped.get_action_space_size()),
             DiscreteActionValueHead(),
         )
 
@@ -157,7 +157,7 @@ with DBInterface(dataset) as db_interface:
             torch.nn.Linear(network_width, network_width), nn.ReLU(),
             nn.Linear(network_width, network_width), nn.ReLU(),
             pfrl.nn.Branched(
-                nn.Sequential(nn.Linear(network_width, env.get_action_space_size()),
+                nn.Sequential(nn.Linear(network_width, env.unwrapped.get_action_space_size()),
                               SoftmaxCategoricalHead(),),
                 nn.Linear(network_width, 1)
             )
@@ -175,12 +175,12 @@ with DBInterface(dataset) as db_interface:
     config.algorithm = algorithm
     config.alpha = configuration.learning_configurations["alpha"]
     config.gamma = agent.gamma
-    config.strategy = env.input_element_selection_strategy
+    config.strategy = env.unwrapped.input_element_selection_strategy
     config.epsilon_strategy = epsilon_strategy
     config.network_width = network_width
     config.episode_length = episode_length
     config.nb_episodes = nb_episodes
-    config.k = env.output_element_count
+    config.k = env.unwrapped.output_element_count
     if "DQN" in algorithm:
         config.replay_start_size = agent.replay_start_size
     if "DQN" in algorithm:
@@ -207,7 +207,7 @@ with DBInterface(dataset) as db_interface:
 
     test_target_element_ids = intex_experiments.get_validation_target_ids()
 
-    eval_env.initialize(k=configuration.exploration_configurations["k"], target_element_ids=test_target_element_ids,
+    eval_env.unwrapped.initialize(k=configuration.exploration_configurations["k"], target_element_ids=test_target_element_ids,
                         reward_variant=reward_variant, reward_power=reward_power, db_interface=db_interface,
                         input_element_selection_strategy=configuration.learning_configurations[
                         "input_element_selection_strategy"], eval_mode=True)
@@ -215,25 +215,24 @@ with DBInterface(dataset) as db_interface:
 
     def log_episode(env, agent, t):
         if t % episode_length == 0:
-            episode_log = {
-                "reward": env.cumulated_reward,
-                "steps": t,
-                "step_reward": env.cumulated_reward/t,
-                "targets_found": env.get_found_target_count(),
-                "epsilon": agent.explorer.epsilon if type(agent) == pfrl.agents.DoubleDQN else 0,
-                "distinct_item_seen": len(env.item_ids_seen),
-                "distinct_review_seen": len(env.review_ids_seen),
-                "discarded_steps": env.discarded_steps
+            episode_log = { # * All modified to apply wrappers
+                "reward": Return,
+                "steps": time_step,
+                "step_reward": Return / time_step,
+                "targets_found": env.unwrapped.get_wrapper_attr('get_found_target_count')(),
+                "epsilon": agent.explorer.epsilon if isinstance(agent, pfrl.agents.DoubleDQN) else 0,
+                "distinct_item_seen": len(env.unwrapped.item_ids_seen),
+                "distinct_review_seen": len(env.unwrapped.review_ids_seen),
             }
 
-            episode_log.update(env.quality_function_counters)
-            episode_log.update(env.relevance_function_counters)
+            episode_log.update(env.unwrapped.quality_function_counters)
+            episode_log.update(env.unwrapped.relevance_function_counters)
             wandb.log(episode_log)
-            targets_found = env.get_found_target_count()
+            targets_found = env.unwrapped.get_found_target_count()
             perc = round(
                 float(targets_found / len(target_element_ids)) * 100, 2)
             uc.print_episode(name,
-                             t/episode_length, round(env.cumulated_reward, 2), targets_found, perc)
+                             t/episode_length, round(env.unwrapped.cumulated_reward, 2), targets_found, perc)
 
     class EvaluationLog(EvaluationHook):
         support_train_agent = True

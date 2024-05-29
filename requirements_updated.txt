@@ -98,6 +98,12 @@ uvicorn
 # intex/utilities/save_and_smooth_and_plot.py: 2
 wandb
 
+# data/db_interface.py
+SQLAlchemy
+
+# plot_targets_found.py
+seaborn
+
 # ! ADDITIONAL STEPS:
 # python "import nltk; nltk.download("punkt")"
 # python -m spacy download en_core_web_lg

@@ -16,6 +16,9 @@ from utilities import ColorPrint as uc
 import pandas as pd
 import numpy as np
 import sys
+import warnings
+
+import csv
 
 dataset = configuration.learning_configurations["dataset"]
 algorithm = configuration.learning_configurations["algorithm"]
@@ -24,6 +27,7 @@ transfer_variant = configuration.learning_configurations["transfer_variant"]
 reward_power = configuration.environment_configurations["reward_power"]
 operator_variant = configuration.exploration_configurations["operator_variant"]
 reward_variant = configuration.environment_configurations["reward_variant"]
+
 
 # set parameters based on input arguments from the command line (if any)
 args = [arg[2:] for arg in sys.argv[1:] if arg.startswith("--")]
@@ -43,15 +47,19 @@ torch.set_num_threads(5)
 
 # Define an instance of the INTEX environment
 env: intex_env = gym.make('intex-env-v1', disable_env_checker=True)
+
+print("Env:", env)
+print("dir(env):", dir(env))
+
 with DBInterface(dataset) as db_interface:
 
     target_query = intex_experiments.target_query(test=True)
     target_element_ids = db_interface.get_target_ids(target_query)
 
     # Define the starting point and the target of the environment
-    env.initialize(k=configuration.exploration_configurations["k"], target_element_ids=target_element_ids,
+    env.unwrapped.initialize(k=configuration.exploration_configurations["k"], target_element_ids=target_element_ids,
                    reward_variant=reward_variant, db_interface=db_interface, reward_power=reward_power,
-                   input_element_selection_strategy=configuration.learning_configurations["input_element_selection_strategy"])
+                   input_element_selection_strategy=configuration.learning_configurations["input_element_selection_strategy"], eval_mode=True)
 
     # Define an instance of the deep Q function
     observation_size = configuration.environment_configurations["nb_state_features"]
@@ -66,20 +74,20 @@ with DBInterface(dataset) as db_interface:
         # Set epsilon-greedy as the explorer function
         epsilon = configuration.learning_configurations["epsilon"]
         explorer = pfrl.explorers.ConstantEpsilonGreedy(
-            epsilon=epsilon, random_action_func=env.choose_random_action)
+            epsilon=epsilon, random_action_func=env.unwrapped.choose_random_action)
     elif epsilon_strategy == "linear decay":
         explorer = pfrl.explorers.LinearDecayEpsilonGreedy(
             configuration.learning_configurations["start_epsilon"],
             configuration.learning_configurations["end_epsilon"],
             nb_episodes * episode_length,
-            random_action_func=env.choose_random_action
+            random_action_func=env.unwrapped.choose_random_action
         )
     else:
         explorer = pfrl.explorers.ExponentialDecayEpsilonGreedy(
             configuration.learning_configurations["start_epsilon"],
             configuration.learning_configurations["end_epsilon"],
             configuration.learning_configurations["epsilon_decay_factor"],
-            random_action_func=env.choose_random_action
+            random_action_func=env.unwrapped.choose_random_action
         )
     # Set the discount factor for future rewards.
     gamma = configuration.learning_configurations["gamma"]
@@ -91,7 +99,7 @@ with DBInterface(dataset) as db_interface:
     def phi(x): return x.astype(numpy.float32, copy=False)
     if algorithm == "DQN":
 
-        q_function = q_function(observation_size, env.get_action_space_size())
+        q_function = q_function(observation_size, env.unwrapped.get_action_space_size())
         replay_buffer = pfrl.replay_buffers.ReplayBuffer(capacity=10 ** 5)
         # Use Adam optimizer to optimize the Q function. We set eps=1e-2 for stability.
         optimizer = torch.optim.Adam(q_function.parameters(
@@ -110,7 +118,7 @@ with DBInterface(dataset) as db_interface:
             torch.nn.Linear(network_width, network_width),
             torch.nn.ReLU(),
             torch.nn.LSTM(input_size=network_width, hidden_size=network_width),
-            torch.nn.Linear(network_width, env.get_action_space_size()),
+            torch.nn.Linear(network_width, env.unwrapped.get_action_space_size()),
             torch.DiscreteActionValueHead(),
         )
 
@@ -139,7 +147,7 @@ with DBInterface(dataset) as db_interface:
             torch.nn.Linear(network_width, network_width), torch.nn.ReLU(),
             torch.nn.Linear(network_width, network_width), torch.nn.ReLU(),
             pfrl.nn.Branched(
-                torch.nn.Sequential(torch.nn.Linear(network_width, env.get_action_space_size()),
+                torch.nn.Sequential(torch.nn.Linear(network_width, env.unwrapped.get_action_space_size()),
                                     torch.SoftmaxCategoricalHead(),),
                 torch.nn.Linear(network_width, 1)
             )
@@ -157,12 +165,12 @@ with DBInterface(dataset) as db_interface:
     config.algorithm = algorithm
     config.alpha = configuration.learning_configurations["alpha"]
     config.gamma = agent.gamma
-    config.strategy = env.input_element_selection_strategy
+    config.strategy = env.unwrapped.input_element_selection_strategy
     config.epsilon_strategy = epsilon_strategy
     config.network_width = network_width
     config.episode_length = episode_length
     config.nb_episodes = nb_episodes
-    config.k = env.output_element_count
+    config.k = env.unwrapped.output_element_count
     if "DQN" in algorithm:
         config.replay_start_size = agent.replay_start_size
     if "DQN" in algorithm:
@@ -190,6 +198,9 @@ with DBInterface(dataset) as db_interface:
                                   "sim", "summary_sim", "sentiment_sim", "tag_sim", "topic_sim", "attribute_sim"]
     feature_activation = pd.DataFrame(0, index=np.arange(
         observation_size), columns=feature_activation_columns)
+
+    results = []
+
 
     # load the trained model based on the testing variant
     agent_model_address = f"model/{name}/best"
@@ -222,7 +233,7 @@ with DBInterface(dataset) as db_interface:
             action = agent.act(observation)
 
             # Update action counters for logs
-            quality_function, relevance_function, input_element_index = env.demystify_action(
+            quality_function, relevance_function, input_element_index = env.unwrapped.demystify_action(
                 action)
             quality_function_counters[quality_function] += 1
             relevance_function_counters[relevance_function] += 1
@@ -238,6 +249,8 @@ with DBInterface(dataset) as db_interface:
             Return += reward
             time_step += 1
 
+            results.append((episode, time_step, env.unwrapped.get_found_target_count()))
+
             reset = True if time_step == episode_length else False
 
             # Update the agent
@@ -250,10 +263,10 @@ with DBInterface(dataset) as db_interface:
             "reward": Return,
             "steps": time_step,
             "step_reward": Return/time_step,
-            "targets_found": env.get_found_target_count(),
+            "targets_found": env.unwrapped.get_found_target_count(),
             "epsilon": agent.explorer.epsilon if type(agent) == pfrl.agents.DoubleDQN else 0,
-            "distinct_item_seen": len(env.item_ids_seen),
-            "distinct_review_seen": len(env.review_ids_seen)
+            "distinct_item_seen": len(env.unwrapped.item_ids_seen),
+            "distinct_review_seen": len(env.unwrapped.review_ids_seen)
         }
 
         episode_log.update(quality_function_counters)
@@ -262,3 +275,8 @@ with DBInterface(dataset) as db_interface:
 
     uc.print_title("testing finished.")
     feature_activation.to_csv("feature_activation.csv")
+
+    with open("targets_found_by_step.csv", "w") as f:
+        write = csv.writer(f)     
+        write.writerow(["episode", "time_step", "targets_found"])
+        write.writerows(results)

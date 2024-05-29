@@ -3,22 +3,24 @@
 import psycopg2
 import pandas as pd
 import configuration
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
 class DBInterface:
     def __init__(self, dataset):
         self.dataset = dataset
+        self.conn_str = f"postgresql+psycopg2://micheldc:Vd9h083mxB9vXBm4jyMJDrHDjKB9Q2@potato.imag.fr:5432/{self.dataset}_reviews"
+        self.engine = create_engine(self.conn_str)
+        self.Session = sessionmaker(bind=self.engine)
 
     def __enter__(self):
-        self.conn = psycopg2.connect(
-            f"dbname={self.dataset}_reviews host=potato.imag.fr port=5432 user=micheldc password=Vd9h083mxB9vXBm4jyMJDrHDjKB9Q2"
-        )
-        self.cur = self.conn.cursor()
+        self.session = self.Session()
         return self
 
     def __exit__(self, type, value, traceback):
-        self.cur.close()
-        self.conn.close()
+        self.session.close()
+        self.engine.dispose()
 
     # Once the query string is determined, this function executes the query over the Postgres database.
     def execute_query(self, query_type, query_string, query_parameters=None):
@@ -27,8 +29,10 @@ class DBInterface:
         # In other cases, it should be a dictionary.
         results = {}
 
-        self.cur.execute(query_string)
-        query_results = self.cur.fetchall()
+        with self.engine.connect() as connection:
+            connection.execute(query_string)
+            result = connection.execute(query)
+            query_results = result.fetchall()
 
         # In case the query is rating retrieval, the outcome should be case to integer.
         if query_type in ["get_ratings"]:
@@ -59,9 +63,9 @@ class DBInterface:
     # Most query executions in INTEX are "select queries". However, there exist a few manipulation
     # ... queries as well, i.e., "insert". These queries are handled by this function.
     def manipulation_query(self, topic_insert_query):
-
-        self.cur.execute(topic_insert_query)
-        self.conn.commit()
+        with self.engine.connect() as connection:
+            connection.execute(topic_insert_query)
+            connection.commit()
         return True
 
     # Each query is identified with a name, i.e., "query_type".
@@ -200,41 +204,41 @@ class DBInterface:
         return query
 
     def get_item_id_from_keywords(self, keywords):
-        self.cur.execute(
-            f"""select e.id 
+        with self.engine.connect() as connection:
+            result = connection.execute( f"""select e.id 
                 from elements as e 
                 inner join attributes as a on e.id = a.element_id and a.name = 'text' 
                 where e.type = 'item' and a.value like ' {keywords}' 
-                limit 1;""")
-        result = self.cur.fetchone()
+                limit 1;""").fetchone()
         return result[0] if result != None else None
 
     def get_item_count(self):
-        self.cur.execute(
-            f"""select count(e.id) 
+        with self.engine.connect() as connection:
+            result = connection.execute(
+                f"""select count(e.id) 
                 from elements as e 
-                where e.type = 'item';""")
-        return self.cur.fetchone()[0]
+                where e.type = 'item';""").fetchone()
+        return result[0] if result != None else None
 
     def get_random_element_id(self, element_type=None):
-        self.cur.execute(
-            f"""select e.id 
-                from elements as e 
-                order by random() limit 1;""")
-        result = self.cur.fetchone()
+        with self.engine.connect() as connection:
+            result = connection.execute(
+                f"""select e.id 
+                    from elements as e 
+                    order by random() limit 1;""").fetchone()
         return result[0] if result != None else None
 
     def get_random_element(self, element_type=None):
         return pd.read_sql(
             f"""select e.*
                 from elements as e 
-                order by random() limit 1;""", self.conn).iloc[0]
+                order by random() limit 1;""", self.engine).iloc[0]
 
     def get_element(self, element_id):
         return pd.read_sql(
             f"""select e.*  
                 from elements as e 
-                where e.id = {element_id};""", self.conn).iloc[0]
+                where e.id = {element_id};""", self.engine).iloc[0]
 
     def get_elements(self, element_ids):
         element_ids = str(element_ids).replace(
@@ -242,14 +246,14 @@ class DBInterface:
         return pd.read_sql(
             f"""select e.*  
                 from elements as e 
-                where e.id in {element_ids};""", self.conn)
+                where e.id in {element_ids};""", self.engine)
 
     def get_element_pair_similarity(self, element1_id, element2_id):
         return pd.read_sql(
             f"""select *  
                 from similarities
                 where (element1_id = {element1_id} and element2_id = {element2_id})
-                    or (element1_id = {element2_id} and element2_id = {element1_id});""", self.conn)
+                    or (element1_id = {element2_id} and element2_id = {element1_id});""", self.engine)
 
     def get_element_to_element_list_similarities(self, exploration_element_ids, element_ids):
         element_ids = str(element_ids).replace(
@@ -260,7 +264,7 @@ class DBInterface:
             f"""select *  
                 from similarities
                 where (element1_id in {exploration_element_ids} and element2_id in {element_ids})
-                    or (element1_id in {element_ids} and element2_id in {exploration_element_ids});""", self.conn)
+                    or (element1_id in {element_ids} and element2_id in {exploration_element_ids});""", self.engine)
 
     def get_relevant_elements(self, element, relevance_function, k_prime):
         query = f"""select e.*, s.{relevance_function}  
@@ -275,13 +279,13 @@ class DBInterface:
         query += f"""
                 order by s.{relevance_function} desc, e.id 
                 limit {k_prime};"""
-        return pd.read_sql(query, self.conn)
+        return pd.read_sql(query, self.engine)
 
     def get_episode_start_elements(self, k):
         order_by = "id"
         if configuration.environment_configurations["start_random"]:
             order_by = "random()"
-        return pd.read_sql(f"""SELECT * FROM elements order by {order_by} limit {k+1}; """, self.conn)
+        return pd.read_sql(f"""SELECT * FROM elements order by {order_by} limit {k+1}; """, self.engine)
 
     def get_related_items(self, related_item_ids):
         if len(related_item_ids) == 0:
@@ -292,25 +296,25 @@ class DBInterface:
             return pd.read_sql(
                 f"""select e.* 
                 from elements as e
-                where e.id in {related_item_ids};""", self.conn)
+                where e.id in {related_item_ids};""", self.engine)
 
     def get_max_text_size(self):
-        self.cur.execute(
-            f"select max(length(text)) from elements;")
-        return self.cur.fetchone()[0]
+        with self.engine.connect() as connection:
+            result = connection.execute(f"select max(length(text)) from elements;")
+        return result.fetchone()[0]
 
     def get_max_tag_count(self):
-        self.cur.execute(
-            f"select max(array_length(tags,1)) from elements;")
-        return self.cur.fetchone()[0]
+        with self.engine.connect() as connection:
+            result = connection.execute(f"select max(array_length(tags,1)) from elements;")
+        return result.fetchone()[0]
 
     # core items to select for the experiments
     def get_target_item_ids(self, query):
-        target_item_ids = pd.read_sql(query, self.conn).item_id.to_list()
+        target_item_ids = pd.read_sql(query, self.engine).item_id.to_list()
         return target_item_ids
 
     def get_target_ids(self, query):
-        target_ids = pd.read_sql(query, self.conn).id.to_list()
+        target_ids = pd.read_sql(query, self.engine).id.to_list()
         if configuration.learning_configurations["target_limit"]:
             limit = configuration.learning_configurations["target_size"]
             return target_ids[:limit]
