@@ -73,10 +73,10 @@ exploration_configurations["nb_optimization_loops"] = 150
 exploration_configurations["optimization_meter"] = "time_limit"
 
 # Assuming the set {"sim", "summary_sim", "sentiment_sim", "tag_sim", "topic_sim"}, hence 5 relevance functions
-exploration_configurations["nb_relevance_functions"] = 5
+exploration_configurations["nb_relevance_functions"] = 4 # - 1 when topic_sim is removed
 
 # Assuming the set {"no_otim", "diverse_numerical", "diverse_review", "coverage_review"}, hence 4 quality functions
-exploration_configurations["nb_quality_functions"] = 4
+exploration_configurations["nb_quality_functions"] = 1
 
 # Maximum number of unique words in reviews
 exploration_configurations["max_nb_words"] = 300
@@ -84,7 +84,7 @@ exploration_configurations["max_text_size"] = 1000
 exploration_configurations["max_tag_count"] = 100
 
 # By default, it remains blank. It can also be TSG, TEXT, ATTRIB, ALL.
-exploration_configurations["operator_variant"] = "ALL"
+exploration_configurations["operator_variant"] = "NOQUAL"
 
 # ***** PARAMETERS FOR ENVIRONMENT INITIALIZATION *****
 

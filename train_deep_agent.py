@@ -84,7 +84,7 @@ with DBInterface(dataset) as db_interface:
         # Set epsilon-greedy as the explorer function
         epsilon = configuration.learning_configurations["epsilon"]
         explorer = pfrl.explorers.ConstantEpsilonGreedy(
-            epsilon=epsilon, random_action_func=env.choose_random_action)
+            epsilon=epsilon, random_action_func=env.unwrapped.choose_random_action)
     elif epsilon_strategy == "linear decay":
         explorer = pfrl.explorers.LinearDecayEpsilonGreedy(
             configuration.learning_configurations["start_epsilon"],
@@ -215,14 +215,16 @@ with DBInterface(dataset) as db_interface:
 
     def log_episode(env, agent, t):
         if t % episode_length == 0:
-            episode_log = { # * All modified to apply wrappers
-                "reward": Return,
-                "steps": time_step,
-                "step_reward": Return / time_step,
-                "targets_found": env.unwrapped.get_wrapper_attr('get_found_target_count')(),
+
+            episode_log = {  # * All modified to avoid wrappers
+                "reward": env.unwrapped.cumulated_reward,
+                "steps": t,
+                "step_reward": env.unwrapped.cumulated_reward/t,
+                "targets_found": env.unwrapped.get_found_target_count(),
                 "epsilon": agent.explorer.epsilon if isinstance(agent, pfrl.agents.DoubleDQN) else 0,
                 "distinct_item_seen": len(env.unwrapped.item_ids_seen),
                 "distinct_review_seen": len(env.unwrapped.review_ids_seen),
+                "discarded_steps": env.unwrapped.discarded_steps
             }
 
             episode_log.update(env.unwrapped.quality_function_counters)
@@ -244,11 +246,11 @@ with DBInterface(dataset) as db_interface:
             eval_stats.pop('length_stdev')
             eval_stats.pop('length_max')
             eval_stats.pop('length_min')
-            # eval_stats.append(eval_env.get_found_target_count())
+            eval_stats.append(eval_env.get_found_target_count())
             wandb.log(eval_stats)
-            print(eval_stats)
-            print(agent_stats)
-            print(env_stats)
+            print("eval stats:", eval_stats)
+            print("agent stats:", agent_stats)
+            print("env_stats:", env_stats)
 
     train_agent_with_evaluation(agent, env, steps=episode_length * nb_episodes,
                                 outdir=f'./model/{wandb.run.name}', train_max_episode_len=episode_length,

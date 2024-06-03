@@ -52,10 +52,10 @@ class intex_env(gym.Env):
 
         # This dictionary maps each relevance function code to its name.
         self.relevance_function_dic = {0: "sim", 1: "summary_sim",
-                                       2: "sentiment_sim", 3: "tag_sim", 4: "topic_sim", 5: "attribute_sim"}
+                                       2: "sentiment_sim", 3: "tag_sim", 4: "attribute_sim"}
         # This dictionary maps each quality function code to its name.
         self.quality_function_dic = {
-            0: "none", 1: "diverse_numerical", 2: "diverse_review", 3: "coverage_review"}
+            0: "none" } #, 1: "diverse_numerical", 2: "diverse_review", 3: "coverage_review"}
         # This dictionary maps the element types
         # self.element_type_dic = {0: "item", 1: "review"}
         self.done = False

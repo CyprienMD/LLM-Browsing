@@ -70,7 +70,7 @@ scipy==1.12.0
 setuptools
 
 # intex/data/generate_review_metadata.py: 19,20
-spacy
+# spacy : removed because of problems in installation
 
 # intex/server/main.py: 15
 starlette
@@ -108,3 +108,4 @@ seaborn
 # python "import nltk; nltk.download("punkt")"
 # python -m spacy download en_core_web_lg
 # python -m textblolb.download_corpora
+# pip install spacy
