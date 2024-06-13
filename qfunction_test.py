@@ -5,8 +5,8 @@ import numpy as np
 
 # Parameters:
 target_variant = configuration.learning_configurations["target_variant"]
-action_space_size = 240
-agent_model_address = "model/amazon_T1_ALL__MOO/best/model.pt"
+action_space_size = 50
+agent_model_address = "model/amazon_T1_NOQUAL__MOO/best/model.pt"
 observation_size = configuration.environment_configurations["nb_state_features"]
 
 METHOD = 2 # 1 for postgres, 2 for csv file
@@ -92,10 +92,10 @@ def get_score_for_action(q_values, input_element_id, output_element_ids, relevan
     def mystify_action(relevance_function, quality_function, input_index):
         # This dictionary maps each relevance function to a code in the range [0, 4].
         relevance_function_inverse_dic = {
-            "sim": 0, "summary_sim": 1, "sentiment_sim": 2, "tag_sim": 3, "topic_sim": 4, "attribute_sim": 5}
+            "sim": 0, "summary_sim": 1, "sentiment_sim": 2, "tag_sim": 3, "attribute_sim": 4} #"topic_sim": 4
         # This dictionary maps each quality function to a code in the range [0, 3].
         quality_function_inverse_dic = {
-            "none": 0, "diverse_numerical": 1, "diverse_review": 2, "coverage_review": 3}
+            "none": 0} #, "diverse_numerical": 1, "diverse_review": 2, "coverage_review": 3}
         # all information will combined to obtain one unique ID.
         exploration_action_mystified = quality_function_inverse_dic[quality_function] * len(relevance_function_inverse_dic) + \
             relevance_function_inverse_dic[relevance_function] + \
@@ -107,19 +107,30 @@ def get_score_for_action(q_values, input_element_id, output_element_ids, relevan
 
 # Example:
 
-# picking random element ids
-if METHOD == 1:
-    with DBInterface("amazon") as db_interface:
-        output_element_ids = [db_interface.get_random_element_id() for i in range(11)]
-        input_element_id = output_element_ids.pop(0)
-elif METHOD == 2:
-    import random
-    unique_ids = df['id'].unique()
-    output_element_ids = random.sample(list(unique_ids), min(11, len(unique_ids)))
-    input_element_id = output_element_ids.pop(0)
+if False:
 
-action = ("summary_sim", "none", 4) # example
+    # picking random element ids
+    if METHOD == 1:
+        with DBInterface("amazon") as db_interface:
+            output_element_ids = [db_interface.get_random_element_id() for i in range(11)]
+            input_element_id = output_element_ids.pop(0)
+    elif METHOD == 2:
+        import random
+        unique_ids = df['id'].unique()
+        output_element_ids = random.sample(list(unique_ids), min(11, len(unique_ids)))
+        input_element_id = output_element_ids.pop(0)
+
+else:
+
+    output_element_ids =  [40865, 39744, 37870, 37360, 41518, 40871, 40305, 38657, 40915, 41461]
+    input_element_id = 38448
+
+
+action = ("summary_sim", "none", 9) # example
 
 q_values = get_q_values(input_element_id, output_element_ids)
+
+print("Q Values:", q_values)
+print("len(q_values):", len(q_values))
 
 print(f"Score for action {action} in state ({input_element_id}, {output_element_ids}):", get_score_for_action(q_values, input_element_id, output_element_ids, *action))

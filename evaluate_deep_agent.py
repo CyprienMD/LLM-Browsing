@@ -65,8 +65,7 @@ with DBInterface(dataset) as db_interface:
     observation_size = configuration.environment_configurations["nb_state_features"]
     # Set episode parameters
     nb_episodes = configuration.learning_configurations["test_nb_episodes"]
-    # episode_length = configuration.learning_configurations["episode_length"]
-    episode_length = 50
+    episode_length = configuration.learning_configurations["test_episode_length"]
     show_every = configuration.learning_configurations["show_every"]
 
     epsilon_strategy = configuration.learning_configurations["epsilon_strategy"]
@@ -204,14 +203,19 @@ with DBInterface(dataset) as db_interface:
 
     # load the trained model based on the testing variant
     agent_model_address = f"model/{name}/best"
+    print("Loading model at address :", agent_model_address)
     agent.load(agent_model_address)
     # agent.load("dqn-agent")
+
+    exploration_reports = []
 
     for episode in range(1, nb_episodes + 1):
 
         uc.print_param("episode", episode)
         # Receive the first observation by resetting the environment
         observation = env.reset()
+
+        exploration_report = (env.input_element.id, [])
 
         # return is the sum of all reward
         Return = 0
@@ -237,6 +241,8 @@ with DBInterface(dataset) as db_interface:
                 action)
             quality_function_counters[quality_function] += 1
             relevance_function_counters[relevance_function] += 1
+
+            exploration_report[1].append(([x[1].id for x in env.output_elements.iterrows()], input_element_index, relevance_function))
 
             for i in range(observation_size):
                 if observation[i] == 1:
@@ -272,6 +278,12 @@ with DBInterface(dataset) as db_interface:
         episode_log.update(quality_function_counters)
         episode_log.update(relevance_function_counters)
         wandb.log(episode_log)
+
+        exploration_reports.append(exploration_report)
+
+        print("Exploration report:", exploration_report)
+    
+    print("All Exploration Reports:", exploration_reports)
 
     uc.print_title("testing finished.")
     feature_activation.to_csv("feature_activation.csv")

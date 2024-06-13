@@ -174,9 +174,9 @@ class exploration():
 
         improved = False
 
-        if new_quality_score >= old_quality_score and optimization_direction == "max": # ! TODO : switch back to <
+        if new_quality_score > old_quality_score and optimization_direction == "max":
             improved = True
-        elif new_quality_score <= old_quality_score and optimization_direction == "min": # ! TODO : switch back to >
+        elif new_quality_score < old_quality_score and optimization_direction == "min":
             improved = True
 
         return improved

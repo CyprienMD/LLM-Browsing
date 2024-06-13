@@ -1,7 +1,7 @@
 key
 wandb/
 *__pycache__/
-model/
+model/*_SCL/
 embed_api_test.py
 *.backup
 model5.gensim*

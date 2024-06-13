@@ -67,6 +67,8 @@ with DBInterface(dataset) as db_interface:
 
     target_element_ids = intex_experiments.get_target_ids()
 
+    print(f"Target set (len {len(target_element_ids)}):", target_element_ids)
+
     # Define the starting point and the target of the environment
     env.unwrapped.initialize(k=configuration.exploration_configurations["k"], target_element_ids=target_element_ids,
                    reward_variant=reward_variant, db_interface=db_interface, reward_power=reward_power,
@@ -246,7 +248,7 @@ with DBInterface(dataset) as db_interface:
             eval_stats.pop('length_stdev')
             eval_stats.pop('length_max')
             eval_stats.pop('length_min')
-            eval_stats.append(eval_env.get_found_target_count())
+            eval_stats["targets_found"] = eval_env.get_found_target_count()
             wandb.log(eval_stats)
             print("eval stats:", eval_stats)
             print("agent stats:", agent_stats)

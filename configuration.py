@@ -8,8 +8,8 @@ print("script configuration.py called")
 learning_configurations = {}
 
 learning_configurations["nb_episodes"] = 850
-learning_configurations["test_nb_episodes"] = 100
-learning_configurations["test_episode_length"] = 20
+learning_configurations["test_nb_episodes"] = 20
+learning_configurations["test_episode_length"] = 50
 learning_configurations["episode_length"] = 400
 learning_configurations["alpha"] = 0.0003				# Learning rate
 learning_configurations["gamma"] = 0.9				# Reward discount factor

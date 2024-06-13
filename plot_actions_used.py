@@ -19,7 +19,7 @@ relevance_functions = [ "sim", "summary_sim", "sentiment_sim", "tag_sim", "topic
 
 # Define the project and run ID
 project_name = "cyprienm/llm&databases/"
-run_id = "c210m8r8"
+run_id = "haorday2"
 
 name = f"{dataset}_{target_variant}_{operator_variant}_{transfer_variant}_{reward_variant}" # ? useless ?
 
